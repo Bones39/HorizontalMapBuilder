@@ -97,6 +97,7 @@ function createTileDiv(x, y, imageSource, e) {
 		// append to canvas box so it can be positionned relativly to it
 		// canvasBox.offsetLeft pour avoir la position de canvasBos
 		canvasBox.appendChild(div);
+		updateConstraintArray(x, y, imageSource);
 	}
 }
 function removeTileDiv(e) {
@@ -107,6 +108,12 @@ function removeTileDiv(e) {
 		// remove from div array
 		var itemIndexToRemove = divArray.indexOf(divIdToRemove);
 		divArray.splice(itemIndexToRemove, 1);
+		// splite tile name on e and - 
+		var strArray = divIdToRemove.split(/[e-]/)
+		// update constraint array
+		var x = parseInt(strArray[1]);
+		var y = parseInt(strArray[2]);
+		updateConstraintArray(x, y);
 	}
 }
 function initializeConstraintGrid() {
@@ -114,14 +121,15 @@ function initializeConstraintGrid() {
 	var nbOfColumn = canvas.width / 20;
 	var nbOfLine = canvas.height / 20;
 	// build an array representing the line
-	var currentLine = new Array(nbOfColumn);
-	for (let i = 0; i < nbOfColumn; i++) {currentLine[i] = 0};
+	// var currentLine = new Array(nbOfColumn);
+	var currentLine = [];
+	for (let i = 0; i < nbOfColumn; i++) currentLine.push(0);
 	// push the line array in the global gridConstraint array, will result into a 2D array
-	for (let j = 0; j < nbOfLine; j++) gridConstraint.push(currentLine);
+	for (let j = 0; j < nbOfLine; j++) gridConstraint.push(JSON.parse(JSON.stringify(currentLine)));
 	// console.table(gridConstraint);
 }
 
-function doCapture(e) {
+function doCapture() {
 	html2canvas(canvasBox).then((canvas) => {
 		console.log("in html2canvas!");
 		const base64image = canvas.toDataURL("image/png");
@@ -134,6 +142,33 @@ function doCapture(e) {
 		link.click();
 		document.body.removeChild(link);
 	});
+}
+function updateConstraintArray(x, y, imageSource) {
+	// calcultate array index to update
+	var xIndex = x / 20;
+	var yIndex = y / 20;
+	// if no image source, delete the corresponding constraint
+	var constraintValue = 0;
+	if (imageSource) {
+		// determine the kind of constraint to apply
+		var imageName = imageSource.split("/")[4];
+		var constraint = imageName.split("_")[0];
+		switch (constraint) {
+			case "flat":
+				constraintValue = 1;
+				break;
+			case "up":
+				constraintValue = 0.5;
+				break;
+			case "down":
+				constraintValue = -0.5;
+				break;
+			default:
+				constraintValue = 0;
+		}
+	}
+	gridConstraint[yIndex][xIndex] = constraintValue;
+	console.table(gridConstraint);
 }
 // ======= EVENTS HANDLER =======
 gridDisplayButton.onclick = toggleVisibility;
