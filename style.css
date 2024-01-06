@@ -1,0 +1,35 @@
+body {
+	background: rgb(204, 229, 204);
+}
+canvas {
+	background: rgb(119, 201, 248);
+}
+canvas div {
+	position: absolute;
+}
+.container {
+	display: flex;
+	column-gap: 15px;
+}
+.tileDisplayer {
+	width: 21px;
+	margin: 5px 0px;
+	box-shadow: 0px 3px 2px black;
+}
+.tileDisplayer:hover {
+	width: 22px; height: 23px;
+	margin: 5px 0px;
+	box-shadow: 1px 4px 5px black;
+}
+#floating-image {
+	width: 20px; height: 20px;
+	position: absolute;
+}
+#canvasBox {
+	position: relative;
+}
+#canvasBox div {
+	position: absolute;
+	width: 20px; height: 20px;
+	background: red;
+}

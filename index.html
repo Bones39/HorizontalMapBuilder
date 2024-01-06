@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Map Builder</title>
+	</head>
+	<body>
+		<div class="container">
+			<div id="canvasBox">
+				<canvas></canvas>
+			</div>
+			<div></div>
+			<div id="commandBox">
+				<button id="gridVisibilityButton">Hide/Display Grid</button>
+				<div class="tileDisplayer">
+					<img src="/tiles/flat_20x20.png" id="flat_20x20">
+				</div>
+				<div class="tileDisplayer">
+					<img src="/tiles/up_20x20.png" id="up_20x20">
+				</div>
+				<div class="tileDisplayer">
+					<img src="/tiles/down_20x20.png" id="down_20x20">
+				</div>
+				<div class="tileDisplayer">
+					<img src="/tiles/ground_20x20.png" id="ground_20x20">
+				</div>
+				<button id="captureButton">Capture</button>
+				<!-- <a id="captureButton" href="" download="map.png">Download as PNG</a> -->
+			</div>
+		</div>
+		<div id="floating-image"><img id="selected-image"></div>
+	</body>
+<link rel="stylesheet" href="./style.css">
+<script type="Module" src="./mapBuilder.js"></script>
+<script src="./html2canvas.js"></script>
+</html>
