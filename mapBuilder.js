@@ -21,9 +21,6 @@ let numberOfDisplayTile = 0;
 /** 
  * LAYOUT
  */
-// dimensions should be the same as the jelly car canvas
-canvas.width = 960;
-canvas.height = 540;
 // HTML elements
 let gridDisplayButton = document.getElementById("gridVisibilityButton");
 // let tilesDisplayer = document.getElementsByClassName("tileDisplayer");
@@ -38,10 +35,14 @@ let imageSource = document.getElementById("selected-image");
 let captureButton = document.getElementById("captureButton");
 //
 let canvasBox = document.getElementById("canvasBox");
+canvasBox.style.height = "540px";
 //
 let divArray = [];
 //
 let gridConstraint = [];
+// dimensions should be the same as the jelly car canvas
+canvas.width = 960;
+canvas.height = 540;
 
 /**
  * GRID LAYOUT
@@ -133,15 +134,28 @@ function doCapture() {
 	html2canvas(canvasBox).then((canvas) => {
 		console.log("in html2canvas!");
 		const base64image = canvas.toDataURL("image/png");
+		// const base64image = canvas.toDataURL("image/png");
 		//https://dev.to/sbodi10/download-images-using-javascript-51a9
 		// https://dev.to/seanwelshbrown/how-to-save-an-html5-canvas-as-an-image-with-todataurl-1hjj
 		const link = document.createElement('a');
+		const id = Date.now();
 		link.href = base64image;
-		link.download = 'map';
+		link.download = 'map' + id.toString();
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+		saveConstraintFile(id);
 	});
+}
+function saveConstraintFile(id) {
+	console.log("Trying to save constraint file");
+	const dlAnchorElem = document.createElement('a');
+	var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gridConstraint));
+	dlAnchorElem.setAttribute("href",     dataStr     );
+	dlAnchorElem.setAttribute("download", `gridConstraint${id}.json`);
+	document.body.appendChild(dlAnchorElem);
+	dlAnchorElem.click();
+	document.body.removeChild(dlAnchorElem);
 }
 function updateConstraintArray(x, y, imageSource) {
 	// calcultate array index to update
